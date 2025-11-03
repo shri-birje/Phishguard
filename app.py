@@ -1,6 +1,7 @@
 import os, sqlite3, datetime
 from flask import Flask, render_template, request, g, jsonify
 from flask_socketio import SocketIO, emit, join_room
+from flask_cors import CORS
 import pandas as pd
 import joblib
 
@@ -15,14 +16,16 @@ except Exception:
     async_mode = 'threading'
 
 DB_PATH = os.path.join(os.path.dirname(__file__), 'phishing_logs.db')
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "rf_model.joblib")
+
 app = Flask(__name__, static_folder='static', template_folder='templates')
-app.config['SECRET_KEY'] = 'phishguard-final-secret'
+CORS(app)
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY", "phishguard-final-secret")
 socketio = SocketIO(app, cors_allowed_origins='*', async_mode=async_mode)
 
 # -------------------------
 # Load trained model
 # -------------------------
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "rf_model.joblib")
 if os.path.exists(MODEL_PATH):
     model = joblib.load(MODEL_PATH)
     print("✅ AI Model Loaded Successfully!")
@@ -68,8 +71,8 @@ def close_db(exc):
 # Routes
 # -------------------------
 @app.route('/')
-def index():
-    return render_template('index.html', async_mode=async_mode)
+def home():
+    return "✅ PhishGuard API is running!"
 
 @app.route('/admin')
 def admin():
@@ -207,9 +210,9 @@ def on_metrics(data):
     }, room=session_id)
 
 # -------------------------
-# Run App
+# Run App (local & Render)
 # -------------------------
 if __name__ == '__main__':
     print('Async mode selected:', async_mode)
-    socketio.run(app, host='0.0.0.0', port=5000)
-ss
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host='0.0.0.0', port=port)

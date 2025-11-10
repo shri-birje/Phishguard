@@ -3,8 +3,10 @@ flask-socketio==5.3.3
 flask
 flask-socketio
 flask-cors
-eventlet
 gunicorn
 joblib
 pandas
 scikit-learn
+idna
+gevent
+gevent-websocket

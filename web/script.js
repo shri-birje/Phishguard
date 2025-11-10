@@ -18,6 +18,7 @@ async function checkPhishing() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ url: urlInput })
         });
+        console.log("Sending request to:", `${API_BASE}/api/check`);
 
         if (!response.ok) {
             throw new Error(`Server responded with ${response.status}`);

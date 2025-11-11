@@ -224,7 +224,8 @@ def api_check():
 
             # combine probabilities correctly (probability in 0..1, homoglyph_score 0..100)
             # Final phishing_score is percent (0..100)
-            phishing_score = round((probability * 100.0 * ML_WEIGHT) + (homoglyph_score * HOMOGLYPH_WEIGHT), 2)
+            phishing_score = round((probability * 0.9) + (homoglyph_score * 0.1), 2)
+
             prediction = int(model.predict(X_df)[0])  # 0 or 1
 
             print(f"[DEBUG] ML raw probability for {url}: {probability:.6f}, homoglyph_score: {homoglyph_score}, blended_percent: {phishing_score}%, label_pred: {prediction}")
@@ -239,9 +240,9 @@ def api_check():
         prediction = 1 if phishing_score >= 50 else 0
 
     # risk classification
-    if phishing_score < 30:
+    if phishing_score < 20:
         risk, action = "Low", "Allow"
-    elif phishing_score < 70:
+    elif phishing_score < 60:
         risk, action = "Medium", "Warn"
     else:
         risk, action = "High", "Block"

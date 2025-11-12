@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI-Based Phishing Detection System</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <img src="assets/logo.png" alt="Logo" class="logo">
@@ -17,14 +19,21 @@
         <section class="input-section">
             <h2>Check a Website for Phishing Risk</h2>
             <input type="text" id="urlInput" placeholder="Enter a website URL (e.g., https://example.com)">
-            <button onclick="checkPhishing()">Analyze</button>
+            <div class="button-group">
+                <button onclick="checkPhishing()">Analyze</button>
+                <button id="blockBtn" style="display:none; background-color:#c0392b; color:white;"
+                    onclick="blockUrl()">Block URL</button>
+            </div>
         </section>
 
         <section class="result-section">
             <h3>Result:</h3>
             <div id="result" class="result-box">No input yet</div>
+            <button id="blockBtn" style="display:none" onclick="blockUrl()" class="btn btn-danger">Block URL</button>
         </section>
+
     </main>
+
 
     <footer>
         <p>© 2025 AI Phishing Prevention | Homoglyph & Behavior Intelligence</p>
@@ -32,4 +41,5 @@
 
     <script src="script.js" defer></script>
 </body>
+
 </html>
